@@ -2,14 +2,17 @@ package triangulo;
 
 public class Triangulo {
 	private double ladoC, ladoA, ladoB;
-	private String tipo;
-
+	
+	public Triangulo(double a, double b){
+		this.ladoA = a;
+		this.ladoB = b;
+		this.ladoC = Double.NaN;
+	}
 	
 	public Triangulo(double a, double b, double c){
 		this.ladoA = a;
 		this.ladoB = b;
 		this.ladoC = c;
-		this.tipo = "No especificado";
 	}
 	
 	public double getLadoA() {
@@ -27,9 +30,7 @@ public class Triangulo {
 	public void setLadoB(double ladoB) {
 		this.ladoB = ladoB;
 	}
-	
-	
-	
+		
 	public double getLadoC() {
 		return ladoC;
 	}
@@ -38,44 +39,67 @@ public class Triangulo {
 		this.ladoC = ladoC;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public void validar(){
+	public String validar(){
 		
 		// Validar cantidad de parametros
 		if(!validarCantidadParametros()){
-			System.out.println("Debe ingresar 3 parámetros");
+			return "Debe ingresar 3 parámetros";
 		}			
 		else {
 			// Validar enteros
 			if(!validarEntero()){
-				System.out.println("Los lados deben tener un valor entero");
+				return "Los lados deben tener un valor entero";
 			} else {
-				// Validar suma de lados
+				// Validar valor de parametros
+				if(!validarValorParametros()){
+					return "Los lados del triangulo debe ser mayor a 0";
+				}
+				else {
+					// Validar suma de lados
+					if(!validarSumaDeLados()){
+						return "La suma de dos lados del triangulo es igual al lado restante";
+					}
+					else {
+//						if(!validarSumaDeLadosMayores()){
+//							return "La suma de dos lados del triangulo es mayor al lado restante";
+//						}
+					}
+				}
 				
 				
-				validarTipo();
+				
+				// Validar tipo de triangulo
+				
 								
 			}
-					
-		}	
+			return validarTipo();		
+		}
 	}
 	
 	
+	private boolean validarSumaDeLados(){
+		if(this.ladoA + this.ladoB == this.ladoC ) 
+			return false;
+		return true;
+	}
 	
-	public void validarTipo(){
+	private boolean validarSumaDeLadosMayores(){
+		if(this.ladoA + this.ladoB > this.ladoC ||
+				this.ladoB + this.ladoC > this.ladoA || 
+					this.ladoA + this.ladoC > this.ladoB) 
+			return false;
+		return true;
+	}
+	
+	private String validarTipo(){
 		if(validarEquilatero()){
-			System.out.println("Equilatero");
+			return "Equilatero";
 		} else if(validarEscaleno()){
-			System.out.println("Escaleno");
+			return "Escaleno";
 		} else if(validarIsoceles()){
-			System.out.println("Isoceles");
+			return "Isoceles";
+		} else {
+			return "Nada";
 		}
 	}
 	
@@ -104,8 +128,7 @@ public class Triangulo {
 		return false;
 	}
 		
-	
-	public boolean validarValorParametros(){
+	private boolean validarValorParametros(){
 		if(this.ladoA <= 0 || this.ladoB <= 0 || this.ladoC <= 0){
 			return false;
 		}
@@ -113,19 +136,19 @@ public class Triangulo {
 	}
 	
 	// TESTEAR ESTO
-	public boolean validarCantidadParametros(){
+	private boolean validarCantidadParametros(){
 		
-		if(Double.toString(this.ladoA).equals(null)){
+		if(Double.isNaN(ladoA)){
 			return false;
-		} else if (Double.toString(this.ladoB).equals(null)){
+		} else if (Double.isNaN(ladoB)){
 			return false;
-		} else if (Double.toString(this.ladoC).equals(null)){
+		} else if (Double.isNaN(ladoC)){
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean validarEntero(){
+	private boolean validarEntero(){
 		
 		if (this.ladoA == (int) this.ladoA && this.ladoB == (int) this.ladoB
 				&& this.ladoC == (int) this.ladoC)
